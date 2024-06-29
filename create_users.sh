@@ -56,7 +56,7 @@ while IFS= read -r line; do
     # Add user to the specified groups
     IFS=',' read -ra group_array <<<"$groups"
 
-    group_array | xargs -n 1 groupadd -r
+    $group_array | xargs -n 1 groupadd -r
     echo "Groups $group_array created"
 
     usermod -aG $group_array $username
