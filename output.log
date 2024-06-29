@@ -2,16 +2,37 @@ Cloning into '/tmp/destinedcodes_repo'...
 Running Test 1: Check if script exists
 Running Test 2: Check if README.md exists
 Running Test 3: Check if users are created
-./grader.sh: line 79: userlist.txt: No such file or directory
+User zxenon created successfully.
+groupadd: ' sudo' is not a valid group name
+Group  sudo created successfully.
+usermod: group ' sudo' does not exist
+User zxenon added to group  sudo.
+Group dev created successfully.
+User zxenon added to group dev.
+groupadd: 'www-data\nidimma; sudo\nmayowa; dev' is not a valid group name
+Group www-data\nidimma; sudo\nmayowa; dev created successfully.
+usermod: group 'www-data\nidimma; sudo\nmayowa; dev' does not exist
+User zxenon added to group www-data\nidimma; sudo\nmayowa; dev.
+User zxenon added to group www-data.
+User creation script completed.
 Running Test 4: Check if groups are created and users are added to them
 Running Test 5: Check if passwords are set and stored securely
 grep: /var/secure/user_passwords.csv: No such file or directory
 Running Test 6: Check if logs are created and contain the right entries
 grep: /var/log/user_management.log: No such file or directory
 Running Test 7: Edge case - user already exists
-./grader.sh: line 79: userlist.txt: No such file or directory
+User testuser already exists.
+User creation script completed.
 Running Test 8: Check if groups are created and user is added even if user exists
 Running Test 9: Empty userlist file
-touch: cannot touch 'userlist.txt': No such file or directory
+User creation script completed.
 Running Test 10: Check if a user is added to multiple groups
-./grader.sh: line 79: userlist.txt: No such file or directory
+User alice created successfully.
+groupadd: ' sudo' is not a valid group name
+Group  sudo created successfully.
+usermod: group ' sudo' does not exist
+User alice added to group  sudo.
+Group dev created successfully.
+User alice added to group dev.
+User alice added to group www-data.
+User creation script completed.

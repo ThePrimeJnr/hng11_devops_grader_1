@@ -2,8 +2,8 @@
 
 set -e
 
-echo "" > output.log
-exec > output.log 2>&1
+echo "" >output.log
+exec >output.log 2>&1
 
 if [ -z "$1" ]; then
     echo "Error: GitHub repository URL is required"
@@ -18,7 +18,6 @@ RESULT_FILE="/tmp/${USERNAME}_result.json"
 echo -n "" >$RESULT_FILE
 
 cleanup() {
-    rm -rf $CLONE_DIR
     rm -f userlist.txt
     rm -f /var/secure/user_passwords.csv
     rm -f /var/log/user_management.log
@@ -84,5 +83,6 @@ for i in "${!tests[@]}"; do
     [ $i -lt $((${#tests[@]} - 1)) ] && echo "," >>$RESULT_FILE
     cleanup
 done
+rm -rf $CLONE_DIR
 
 echo "]" >>$RESULT_FILE
