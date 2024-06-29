@@ -1,0 +1,125 @@
+body {
+    font-family: "Roboto", sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+.container {
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px 40px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+h1 {
+    color: #007bff;
+    font-size: 26px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+input {
+    width: calc(100% - 24px);
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    width: calc(100% - 24px);
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 700;
+    background: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background: #0056b3;
+    transform: scale(1.02);
+}
+
+.result-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px 0;
+    padding: 10px;
+    text-align: left;
+}
+
+.result-card.pass {
+    border-left: 5px solid #28a745;
+}
+
+.result-card.fail {
+    border-left: 5px solid #dc3545;
+}
+
+.result-title {
+    font-weight: bold;
+}
+
+.result-status {
+    font-weight: bold;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.result-status.pass {
+    background: #28a745;
+}
+
+.result-status.fail {
+    background: #dc3545;
+}
+
+/* Button Loading Spinner */
+.button-spinner {
+    border: 2px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 2px solid #007bff;
+    width: 14px;
+    height: 14px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    display: inline-block;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

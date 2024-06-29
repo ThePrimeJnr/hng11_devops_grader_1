@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="HNG11 DevOps Grader 1 - A tool to grade DevOps tasks for HNG11 interns" />
+    <meta name="keywords" content="HNG11, DevOps, Grader, Task, Interns, GitHub, Automation" />
+    <meta name="author" content="Your Name" />
+    <link rel="icon" href="https://hng.tech/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <title>HNG11 DevOps Grader 1</title>
+</head>
+<body>
+    <div class="container">
+        <h1>HNG11 DevOps Grader 1</h1>
+        <form id="gradingForm">
+            <input type="text" id="repoUrl" placeholder="Enter GitHub repository URL" required />
+            <button type="submit" id="gradeButton">Grade</button>
+        </form>
+        <div id="resultSection" style="display: none;">
+            <div id="result"></div>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
