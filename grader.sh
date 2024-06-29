@@ -2,6 +2,9 @@
 
 set -e
 
+echo "" > output.log
+exec > output.log 2>&1
+
 if [ -z "$1" ]; then
     echo "Error: GitHub repository URL is required"
     exit 1
