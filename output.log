@@ -6,8 +6,17 @@ zxenon; sudo,dev,www-data
 idimma; sudo
 mayowa; dev,www-data
 User zxenon created successfully.
-zxenon,671wX9wj7JjX
-create_users.sh: line 59: group_array: command not found
+zxenon,i0RNlcFnVg05
+usage: sudo -h | -K | -k | -V
+usage: sudo -v [-ABkNnS] [-g group] [-h host] [-p prompt] [-u user]
+usage: sudo -l [-ABkNnS] [-g group] [-h host] [-p prompt] [-U user]
+            [-u user] [command [arg ...]]
+usage: sudo [-ABbEHkNnPS] [-r role] [-t type] [-C num] [-D directory]
+            [-g group] [-h host] [-p prompt] [-R directory] [-T timeout]
+            [-u user] [VAR=value] [-i | -s] [command [arg ...]]
+usage: sudo -e [-ABkNnS] [-r role] [-t type] [-C num] [-D directory]
+            [-g group] [-h host] [-p prompt] [-R directory] [-T timeout]
+            [-u user] file ...
 Usage: groupadd [options] GROUP
 
 Options:
@@ -29,9 +38,18 @@ Groups sudo created
 usermod: group 'sudo' does not exist
 User zxenon added to sudo
 User idimma created successfully.
-zxenon,671wX9wj7JjX
-idimma,5oCDHfNFSFtc
-create_users.sh: line 59: group_array: command not found
+zxenon,i0RNlcFnVg05
+idimma,fcdSJNFqCnkQ
+usage: sudo -h | -K | -k | -V
+usage: sudo -v [-ABkNnS] [-g group] [-h host] [-p prompt] [-u user]
+usage: sudo -l [-ABkNnS] [-g group] [-h host] [-p prompt] [-U user]
+            [-u user] [command [arg ...]]
+usage: sudo [-ABbEHkNnPS] [-r role] [-t type] [-C num] [-D directory]
+            [-g group] [-h host] [-p prompt] [-R directory] [-T timeout]
+            [-u user] [VAR=value] [-i | -s] [command [arg ...]]
+usage: sudo -e [-ABkNnS] [-r role] [-t type] [-C num] [-D directory]
+            [-g group] [-h host] [-p prompt] [-R directory] [-T timeout]
+            [-u user] file ...
 Usage: groupadd [options] GROUP
 
 Options:
@@ -53,10 +71,10 @@ Groups sudo created
 usermod: group 'sudo' does not exist
 User idimma added to sudo
 User mayowa created successfully.
-zxenon,671wX9wj7JjX
-idimma,5oCDHfNFSFtc
-mayowa,oIb1uKL4MaZT
-create_users.sh: line 59: group_array: command not found
+zxenon,i0RNlcFnVg05
+idimma,fcdSJNFqCnkQ
+mayowa,JiDQmxZspWyb
+create_users.sh: line 59: dev: command not found
 Usage: groupadd [options] GROUP
 
 Options:
@@ -93,8 +111,17 @@ User creation script completed.
 grep: /var/log/user_management.log: No such file or directory
 Running Test 10: Check if a user is added to multiple groups
 User alice created successfully.
-alice,U9tMKgLtXxVT
-create_users.sh: line 59: group_array: command not found
+alice,f5QDnvp1u1cC
+usage: sudo -h | -K | -k | -V
+usage: sudo -v [-ABkNnS] [-g group] [-h host] [-p prompt] [-u user]
+usage: sudo -l [-ABkNnS] [-g group] [-h host] [-p prompt] [-U user]
+            [-u user] [command [arg ...]]
+usage: sudo [-ABbEHkNnPS] [-r role] [-t type] [-C num] [-D directory]
+            [-g group] [-h host] [-p prompt] [-R directory] [-T timeout]
+            [-u user] [VAR=value] [-i | -s] [command [arg ...]]
+usage: sudo -e [-ABkNnS] [-r role] [-t type] [-C num] [-D directory]
+            [-g group] [-h host] [-p prompt] [-R directory] [-T timeout]
+            [-u user] file ...
 Usage: groupadd [options] GROUP
 
 Options:

@@ -55,12 +55,15 @@ while IFS= read -r line; do
 
     # Add user to the specified groups
     IFS=',' read -ra group_array <<<"$groups"
-
-    $group_array | xargs -n 1 groupadd -r
-    echo "Groups $group_array created"
-
-    usermod -aG $group_array $username
-    echo "User $username added to $group_array"
+    for group in "${group_array[@]}"; do
+        echo $group
+        if ! getent group $group &>/dev/null; then
+            groupadd $group
+            echo "Group $group created successfully."
+        fi
+        usermod -aG $group $username
+        echo "User $username added to group $group."
+    done
 
 done <"$USERLIST_FILE"
 
