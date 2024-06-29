@@ -2,6 +2,9 @@ Cloning into '/tmp/destinedcodes_repo'...
 Running Test 1: Check if script exists
 Running Test 2: Check if README.md exists
 Running Test 3: Check if users are created
+zxenon; sudo,dev,www-data
+idimma; sudo
+mayowa; dev,www-data
 User zxenon created successfully.
 groupadd: ' sudo' is not a valid group name
 Group  sudo created successfully.
@@ -9,11 +12,18 @@ usermod: group ' sudo' does not exist
 User zxenon added to group  sudo.
 Group dev created successfully.
 User zxenon added to group dev.
-groupadd: 'www-data\nidimma; sudo\nmayowa; dev' is not a valid group name
-Group www-data\nidimma; sudo\nmayowa; dev created successfully.
-usermod: group 'www-data\nidimma; sudo\nmayowa; dev' does not exist
-User zxenon added to group www-data\nidimma; sudo\nmayowa; dev.
 User zxenon added to group www-data.
+User idimma created successfully.
+groupadd: ' sudo' is not a valid group name
+Group  sudo created successfully.
+usermod: group ' sudo' does not exist
+User idimma added to group  sudo.
+User mayowa created successfully.
+groupadd: ' dev' is not a valid group name
+Group  dev created successfully.
+usermod: group ' dev' does not exist
+User mayowa added to group  dev.
+User mayowa added to group www-data.
 User creation script completed.
 Running Test 4: Check if groups are created and users are added to them
 Running Test 5: Check if passwords are set and stored securely

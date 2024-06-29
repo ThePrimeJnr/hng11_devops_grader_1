@@ -18,9 +18,10 @@ fi
 LOG_FILE="/var/log/user_management.log"
 PASSWORD_FILE="/var/secure/user_passwords.csv"
 
+# exec >$LOG_FILE 2>&1
+
 # Create necessary directories if they do not exist
-mkdir -p "$(dirname "$LOG_FILE")"
-mkdir -p "$(dirname "$PASSWORD_FILE")"
+touch $PASSWORD_FILE
 
 # Function to generate a random password
 generate_password() {
@@ -29,14 +30,18 @@ generate_password() {
 
 # Read the userlist file and process each line
 while IFS= read -r line; do
-    IFS=';' read -r username groups <<< "$line"
+    IFS=';' read -r username groups <<<"$line"
+
+    # Trim spaces
+    username=$(echo "$username" | xargs)
+    groups=$(echo "$groups" | xargs)
 
     if [ -z "$username" ]; then
         continue
     fi
 
     if id "$username" &>/dev/null; then
-        echo "User $username already exists." | tee -a "$LOG_FILE"
+        echo "User $username already exists."
         continue
     fi
 
@@ -44,20 +49,19 @@ while IFS= read -r line; do
     password=$(generate_password)
     useradd -m -s /bin/bash "$username"
     echo "$username:$password" | chpasswd
-    echo "User $username created successfully." | tee -a "$LOG_FILE"
-    echo "$username,$password" >> "$PASSWORD_FILE"
+    echo "User $username created successfully."
+    echo "$username,$password" >>$PASSWORD_FILE
+    cat $PASSWORD_FILE
 
     # Add user to the specified groups
-    IFS=',' read -ra group_array <<< "$groups"
-    for group in "${group_array[@]}"; do
-        if ! getent group "$group" &>/dev/null; then
-            groupadd "$group"
-            echo "Group $group created successfully." | tee -a "$LOG_FILE"
-        fi
-        usermod -aG "$group" "$username"
-        echo "User $username added to group $group." | tee -a "$LOG_FILE"
-    done
+    IFS=',' read -ra group_array <<<"$groups"
 
-done < "$USERLIST_FILE"
+    group_array | xargs -n 1 groupadd -r
+    echo "Groups $group_array created"
 
-echo "User creation script completed." | tee -a "$LOG_FILE"
+    usermod -aG $group_array $username
+    echo "User $username added to $group_array"
+
+done <"$USERLIST_FILE"
+
+echo "User creation script completed."
