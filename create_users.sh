@@ -51,12 +51,10 @@ while IFS= read -r line; do
     echo "$username:$password" | chpasswd
     echo "User $username created successfully."
     echo "$username,$password" >>$PASSWORD_FILE
-    cat $PASSWORD_FILE
 
     # Add user to the specified groups
     IFS=',' read -ra group_array <<<"$groups"
     for group in "${group_array[@]}"; do
-        echo $group
         if ! getent group $group &>/dev/null; then
             groupadd $group
             echo "Group $group created successfully."
