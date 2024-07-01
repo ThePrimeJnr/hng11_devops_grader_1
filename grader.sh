@@ -50,11 +50,11 @@ check_password_file_contains() {
 
 echo "[" >$RESULT_FILE
 
-# # Check if the repository exists and is public
-# if ! curl -s -o /dev/null -w "%{http_code}" "$REPO_URL" | grep -q "200"; then
-#     echo "GitHub repository does not exist or is not public" >$RESULT_FILE
-#     exit 1
-# fi
+# Check if the repository exists and is public
+if ! curl -s -o /dev/null -w "%{http_code}" "$REPO_URL" | grep -q "200"; then
+    echo "GitHub repository does not exist or is not public" >$RESULT_FILE
+    exit 1
+fi
 
 cleanup
 git clone $REPO_URL $CLONE_DIR
