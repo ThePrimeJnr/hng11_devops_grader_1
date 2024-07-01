@@ -15,10 +15,10 @@ RESULT_FILE="/tmp/${USERNAME}_result.json"
 echo -n "" >$RESULT_FILE
 
 cleanup() {
-    for user in zxenon idimma mayowa alice bob charlie testuser; do
+    for user in zxenon idimma mayowa testuser; do
         sudo deluser --remove-home $user &>/dev/null || true
     done
-    for group in hng testgroup; do
+    for group in  zxenon idimma mayowa hng testgroup; do
         sudo delgroup $group &>/dev/null || true
     done
     rm -f userlist.txt
