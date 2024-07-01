@@ -1,6 +1,5 @@
 import subprocess
 from flask import Flask, request, jsonify, render_template
-from time import sleep
 import re
 
 app = Flask(__name__)
@@ -11,16 +10,17 @@ def grade():
     repo_url = data.get('repoUrl')
 
     if not repo_url:
-        return jsonify({'score': 0, 'error': 'Repository URL is required'}), 400
+        return jsonify({'score': 0, 'error': 'Repository URL is required'}), 200
 
-    if not is_valid_github_url(repo_url):
-        return jsonify({'score': 0, 'error': 'Invalid GitHub repository URL'}), 400
+    cleaned_url = clean_github_url(repo_url)
+    if not cleaned_url:
+        return jsonify({'score': 0, 'error': 'Invalid GitHub repository URL'}), 200
 
     try:
-        username = extract_username(repo_url)
+        username = extract_username(cleaned_url)
         result_file = f'/tmp/{username}_result.json'
 
-        subprocess.run(['bash', './grader.sh', repo_url])
+        subprocess.run(['bash', './grader.sh', cleaned_url])
 
         with open(result_file, 'r') as file:
             result_data = file.read()
@@ -31,21 +31,17 @@ def grade():
         return jsonify({'error': str(e)}), 500
 
 def extract_username(repo_url):
-    repo_url = re.sub(r'\.git$', '', repo_url)
-    repo_url = re.sub(r'/tree/.*$', '', repo_url)
-    repo_url = re.sub(r'/settings$', '', repo_url)
     parts = repo_url.split('/')
-    if len(parts) > 4:
+    if len(parts) > 3:
         return parts[3]
     return None
 
-def is_valid_github_url(url):
-    url = re.sub(r'\.git$', '', url)
-    url = re.sub(r'/tree/.*$', '', url)
-    regex = re.compile(
-        r'^(https?://)?(www\.)?github\.com/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+(/.*)?$'
-    )
-    return re.match(regex, url) is not None
+def clean_github_url(url):
+    regex = re.compile(r'^(https?://)?(www\.)?github\.com/[A-Za-z0-9_-]+/[A-Za-z0-9_-]+')
+    match = re.search(regex, url)
+    if match:
+        return match.group(0)
+    return None
 
 @app.route('/')
 def index():
@@ -53,3 +49,4 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
