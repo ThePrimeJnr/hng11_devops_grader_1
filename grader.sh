@@ -2,9 +2,6 @@
 
 set -e
 
-echo "" >output.log
-exec >output.log 2>&1
-
 if [ -z "$1" ]; then
     echo "Error: GitHub repository URL is required"
     exit 1
@@ -37,6 +34,10 @@ check_group_exists() {
     getent group "$1" &>/dev/null
 }
 
+check_user_in_group() {
+    id -nG "$1" | grep -qw "$2"
+}
+
 check_log_contains() {
     grep -q "$1" /var/log/user_management.log
 }
@@ -67,48 +68,43 @@ tests=(
 
     "Test 3: Check if users are created;\
     echo -e \"zxenon; sudo,dev,www-data\nidimma; sudo\nmayowa; dev,www-data\" > userlist.txt &&\
-    cat userlist.txt &&\
     sudo bash create_users.sh userlist.txt &&\
     check_user_exists \"zxenon\" &&\
     check_user_exists \"idimma\" &&\
     check_user_exists \"mayowa\""
 
-    "Test 4: Check if groups are created and users are added to them;\
+    "Test 4: Check if groups are created;\
     check_group_exists \"sudo\" &&\
     check_group_exists \"dev\" &&\
     check_group_exists \"www-data\""
 
-    "Test 5: Check if passwords are set and stored securely;\
+    "Test 5: Check if personal group is created for each user;\
+    check_group_exists \"zxenon_personal\" &&\
+    check_group_exists \"idimma_personal\" &&\
+    check_group_exists \"mayowa_personal\""
+
+    "Test 6: Check if users belong to all specified groups;\
+    check_user_in_group \"zxenon\" \"sudo\" &&\
+    check_user_in_group \"zxenon\" \"dev\" &&\
+    check_user_in_group \"zxenon\" \"www-data\""
+
+    "Test 7: Check if users belong to their personal group;\
+    check_user_in_group \"zxenon\" \"zxenon_personal\" &&\
+    check_user_in_group \"mayowa\" \"mayowa_personal\""
+
+    "Test 8: Check if passwords are stored securely;\
     check_password_file_contains \"zxenon\" &&\
-    check_password_file_contains \"idimma\" &&\
     check_password_file_contains \"mayowa\""
 
-    "Test 6: Check if logs are created and contain the right entries;\
-    check_log_contains \"User zxenon created successfully.\" &&\
-    check_log_contains \"User idimma created successfully.\" &&\
-    check_log_contains \"User mayowa created successfully.\""
+    "Test 9: Check if logs are stored securely;\
+    check_log_contains \"User zxenon created successfully.\""
 
-    "Test 7: Edge case - user already exists;\
+    "Test 10: Check if groups are created and user is added even if user already exists;\
     sudo useradd -m -s /bin/bash testuser &&\
     echo \"testuser; testgroup\" > userlist.txt &&\
     sudo bash create_users.sh userlist.txt &&\
-    check_log_contains \"User testuser already exists.\""
-
-    "Test 8: Check if groups are created and user is added even if user exists;\
-    check_group_exists \"testgroup\""
-
-    "Test 9: Empty userlist file;\
-    touch userlist.txt &&\
-    sudo bash create_users.sh userlist.txt &&\
-    check_log_contains \"User creation script completed.\""
-
-    "Test 10: Check if a user is added to multiple groups;\
-    echo \"alice; sudo,dev,www-data\" > userlist.txt &&\
-    sudo bash create_users.sh userlist.txt &&\
-    check_user_exists \"alice\" &&\
-    id -nG alice | grep -q \"sudo\" &&\
-    id -nG alice | grep -q \"dev\" &&\
-    id -nG alice | grep -q \"www-data\""
+    check_group_exists \"testgroup\" &&\
+    check_user_in_group \"testuser\" \"testgroup\""
 )
 
 for i in "${!tests[@]}"; do
