@@ -23,6 +23,7 @@ cleanup() {
     done
     rm -f userlist.txt
     sudo rm -f /var/secure/user_passwords.txt
+    sudo rm -f /var/secure/user_passwords.csv
     sudo rm -f /var/log/user_management.log
     rm -rf $CLONE_DIR
 }
@@ -44,7 +45,7 @@ check_log_contains() {
 }
 
 check_password_file_contains() {
-    grep -q "$1" /var/secure/user_passwords.txt
+    grep -q "$1" /var/secure/user_passwords.txt || grep -q "$1" /var/secure/user_passwords.csv
 }
 
 echo "[" >$RESULT_FILE

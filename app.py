@@ -35,9 +35,16 @@ def grade():
         return jsonify({'error': str(e)}), 500
 
 def extract_username(repo_url):
-    # Extract the username from the GitHub URL
+    # Remove the trailing .git if present
+    repo_url = re.sub(r'\.git$', '', repo_url)
+    # Remove any additional path components after the repository name
+    repo_url = re.sub(r'/tree/.*$', '', repo_url)
+    repo_url = re.sub(r'/settings$', '', repo_url)
+    # Split the URL and get the username
     parts = repo_url.split('/')
-    return parts[-2]
+    if len(parts) > 4 and parts[2] == 'github.com':
+        return parts[3]
+    return None
 
 def is_valid_github_url(url):
     # Regex to validate GitHub repository URL

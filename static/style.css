@@ -55,6 +55,12 @@ button:hover {
     transform: scale(1.02);
 }
 
+#resultContainer {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
 .result-card {
     display: flex;
     justify-content: space-between;

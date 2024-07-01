@@ -4,6 +4,7 @@ document.getElementById("gradingForm").addEventListener("submit", function (e) {
     const button = document.getElementById("gradeButton");
     const resultSection = document.getElementById("resultSection");
     const result = document.getElementById("result");
+    const totalScore = document.getElementById("totalScore");
 
     button.disabled = true;
     button.innerHTML = '<div class="button-spinner"></div>';
@@ -25,6 +26,7 @@ document.getElementById("gradingForm").addEventListener("submit", function (e) {
         })
         .then((data) => {
             result.innerHTML = "";
+            let score = 0;
             try {
                 data = JSON.parse(data);
             } catch (error) {}
@@ -39,7 +41,11 @@ document.getElementById("gradingForm").addEventListener("submit", function (e) {
                         }">${test.status.toUpperCase()}</span>
                     `;
                     result.appendChild(card);
+                    if (test.status === "pass") {
+                        score += 1;
+                    }
                 });
+                totalScore.innerHTML = `Total Score: ${score}/${data.length}`;
             } else {
                 const card = document.createElement("div");
                 card.className = `result-card fail`;
@@ -47,6 +53,7 @@ document.getElementById("gradingForm").addEventListener("submit", function (e) {
                         <span class="result-title">${data}</span>
                     `;
                 result.appendChild(card);
+                totalScore.innerHTML = "";
             }
             button.disabled = false;
             button.innerHTML = "Grade";
