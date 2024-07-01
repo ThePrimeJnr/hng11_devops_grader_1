@@ -11,21 +11,21 @@ def grade():
     repo_url = data.get('repoUrl')
 
     if not repo_url:
-        return jsonify({'error': 'Repository URL is required'}), 400
+        return jsonify({'score': 0, 'error': 'Repository URL is required'}), 400
 
     if not is_valid_github_url(repo_url):
-        return jsonify({'error': 'Invalid GitHub repository URL'}), 400
+        return jsonify({'score': 0, 'error': 'Invalid GitHub repository URL'}), 400
 
     try:
         username = extract_username(repo_url)
         result_file = f'/tmp/{username}_result.json'
 
-        result = subprocess.run(['bash', './grader.sh', repo_url], capture_output=True, text=True)
+        subprocess.run(['bash', './grader.sh', repo_url])
 
         with open(result_file, 'r') as file:
             result_data = file.read()
 
-        return jsonify({'logs': result.stdout, 'result': result_data})
+        return result_data
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -35,7 +35,7 @@ def extract_username(repo_url):
     repo_url = re.sub(r'/tree/.*$', '', repo_url)
     repo_url = re.sub(r'/settings$', '', repo_url)
     parts = repo_url.split('/')
-    if len(parts) > 4 and parts[2] == 'github.com':
+    if len(parts) > 4:
         return parts[3]
     return None
 

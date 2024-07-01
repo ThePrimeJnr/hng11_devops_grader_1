@@ -18,20 +18,17 @@ document.getElementById("gradingForm").addEventListener("submit", function (e) {
         body: JSON.stringify({ repoUrl }),
     })
         .then(async (response) => {
+	    console.log(response);
             const data = await response.json();
             if (!response.ok) {
-                return data.error;
+                return data;
             }
-            return data.result;
+            return data;
         })
         .then((data) => {
             result.innerHTML = "";
-            let score = 0;
-            try {
-                data = JSON.parse(data);
-            } catch (error) {}
-            if (Array.isArray(data)) {
-                data.forEach((test) => {
+            if (Array.isArray(data.result)) {
+                data.result.forEach((test) => {
                     const card = document.createElement("div");
                     card.className = `result-card ${test.status}`;
                     card.innerHTML = `
@@ -41,16 +38,13 @@ document.getElementById("gradingForm").addEventListener("submit", function (e) {
                         }">${test.status.toUpperCase()}</span>
                     `;
                     result.appendChild(card);
-                    if (test.status === "pass") {
-                        score += 1;
-                    }
                 });
-                totalScore.innerHTML = `Total Score: ${score}/${data.length}`;
+                totalScore.innerHTML = `Total Score: ${data.score}/${data.result.length}`;
             } else {
                 const card = document.createElement("div");
                 card.className = `result-card fail`;
                 card.innerHTML = `
-                        <span class="result-title">${data}</span>
+                        <span class="result-title">${data.error}</span>
                     `;
                 result.appendChild(card);
                 totalScore.innerHTML = "";
