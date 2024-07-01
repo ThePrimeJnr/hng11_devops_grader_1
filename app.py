@@ -7,7 +7,6 @@ app = Flask(__name__)
 
 @app.route('/grade', methods=['POST'])
 def grade():
-    sleep(2)
     data = request.get_json()
     repo_url = data.get('repoUrl')
 
@@ -18,14 +17,11 @@ def grade():
         return jsonify({'error': 'Invalid GitHub repository URL'}), 400
 
     try:
-        # Extract the username from the GitHub URL
         username = extract_username(repo_url)
         result_file = f'/tmp/{username}_result.json'
 
-        # Execute the grading script (assuming 'grader.sh' is your script)
         result = subprocess.run(['bash', './grader.sh', repo_url], capture_output=True, text=True)
 
-        # Read the result from the file
         with open(result_file, 'r') as file:
             result_data = file.read()
 
@@ -35,19 +31,15 @@ def grade():
         return jsonify({'error': str(e)}), 500
 
 def extract_username(repo_url):
-    # Remove the trailing .git if present
     repo_url = re.sub(r'\.git$', '', repo_url)
-    # Remove any additional path components after the repository name
     repo_url = re.sub(r'/tree/.*$', '', repo_url)
     repo_url = re.sub(r'/settings$', '', repo_url)
-    # Split the URL and get the username
     parts = repo_url.split('/')
     if len(parts) > 4 and parts[2] == 'github.com':
         return parts[3]
     return None
 
 def is_valid_github_url(url):
-    # Regex to validate GitHub repository URL
     url = re.sub(r'\.git$', '', url)
     url = re.sub(r'/tree/.*$', '', url)
     regex = re.compile(
