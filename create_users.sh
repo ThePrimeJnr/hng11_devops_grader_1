@@ -16,7 +16,7 @@ fi
 
 # Log file and password file locations
 LOG_FILE="/var/log/user_management.log"
-PASSWORD_FILE="/var/secure/user_passwords.csv"
+PASSWORD_FILE="/var/secure/user_passwords.txt"
 
 # Create necessary directories if they do not exist
 mkdir -p /var/secure

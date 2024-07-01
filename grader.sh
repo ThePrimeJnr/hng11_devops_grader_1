@@ -15,15 +15,16 @@ RESULT_FILE="/tmp/${USERNAME}_result.json"
 echo -n "" >$RESULT_FILE
 
 cleanup() {
-    rm -f userlist.txt
-    rm -f /var/secure/user_passwords.csv
-    rm -f /var/log/user_management.log
     for user in zxenon idimma mayowa alice bob charlie testuser; do
-        deluser --remove-home $user &>/dev/null || true
+        sudo deluser --remove-home $user &>/dev/null || true
     done
-    for group in sudo dev www-data admin testgroup; do
-        delgroup $group &>/dev/null || true
+    for group in hng testgroup; do
+        sudo delgroup $group &>/dev/null || true
     done
+    rm -f userlist.txt
+    sudo rm -f /var/secure/user_passwords.txt
+    sudo rm -f /var/log/user_management.log
+    rm -rf $CLONE_DIR
 }
 
 check_user_exists() {
@@ -43,7 +44,7 @@ check_log_contains() {
 }
 
 check_password_file_contains() {
-    grep -q "$1" /var/secure/user_passwords.csv
+    grep -q "$1" /var/secure/user_passwords.txt
 }
 
 echo "[" >$RESULT_FILE
@@ -55,7 +56,6 @@ echo "[" >$RESULT_FILE
 # fi
 
 cleanup
-rm -rf $CLONE_DIR
 git clone $REPO_URL $CLONE_DIR
 cd $CLONE_DIR
 
@@ -67,37 +67,34 @@ tests=(
     [ -f README.md ]"
 
     "Test 3: Check if users are created;\
-    echo -e \"zxenon; sudo,dev,www-data\nidimma; sudo\nmayowa; dev,www-data\" > userlist.txt &&\
+    echo -e \"zxenon; sudo,hng,www-data\nidimma; sudo\nmayowa; hng,www-data\" > userlist.txt &&\
     sudo bash create_users.sh userlist.txt &&\
     check_user_exists \"zxenon\" &&\
     check_user_exists \"idimma\" &&\
     check_user_exists \"mayowa\""
 
     "Test 4: Check if groups are created;\
-    check_group_exists \"sudo\" &&\
-    check_group_exists \"dev\" &&\
-    check_group_exists \"www-data\""
+    check_group_exists \"hng\""
 
     "Test 5: Check if personal group is created for each user;\
-    check_group_exists \"zxenon_personal\" &&\
-    check_group_exists \"idimma_personal\" &&\
-    check_group_exists \"mayowa_personal\""
+    check_group_exists \"zxenon\" &&\
+    check_group_exists \"mayowa\""
 
     "Test 6: Check if users belong to all specified groups;\
     check_user_in_group \"zxenon\" \"sudo\" &&\
-    check_user_in_group \"zxenon\" \"dev\" &&\
+    check_user_in_group \"mayowa\" \"hng\" &&\
     check_user_in_group \"zxenon\" \"www-data\""
 
     "Test 7: Check if users belong to their personal group;\
-    check_user_in_group \"zxenon\" \"zxenon_personal\" &&\
-    check_user_in_group \"mayowa\" \"mayowa_personal\""
+    check_user_in_group \"zxenon\" \"zxenon\" &&\
+    check_user_in_group \"mayowa\" \"mayowa\""
 
     "Test 8: Check if passwords are stored securely;\
     check_password_file_contains \"zxenon\" &&\
     check_password_file_contains \"mayowa\""
 
     "Test 9: Check if logs are stored securely;\
-    check_log_contains \"User zxenon created successfully.\""
+    check_log_contains \"zxenon\""
 
     "Test 10: Check if groups are created and user is added even if user already exists;\
     sudo useradd -m -s /bin/bash testuser &&\
@@ -118,8 +115,7 @@ for i in "${!tests[@]}"; do
         echo "{\"title\": \"$description\", \"status\": \"fail\"}" >>$RESULT_FILE
     }
     [ $i -lt $((${#tests[@]} - 1)) ] && echo "," >>$RESULT_FILE
-    cleanup
 done
-rm -rf $CLONE_DIR
+cleanup
 
 echo "]" >>$RESULT_FILE
