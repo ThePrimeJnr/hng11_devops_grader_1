@@ -54,9 +54,26 @@ if ! curl -s -o /dev/null -w "%{http_code}" "$REPO_URL" | grep -q "200"; then
     exit 1
 fi
 
+# Extract the main repository URL and subdirectory if present
+if [[ "$REPO_URL" =~ /tree/ ]]; then
+    MAIN_REPO_URL=$(echo "$REPO_URL" | sed 's|/tree/.*||')
+    SUBDIR=$(echo "$REPO_URL" | sed 's|.*/tree/[^/]*/||')
+else
+    MAIN_REPO_URL=$REPO_URL
+    SUBDIR=""
+fi
+
 cleanup
-git clone $REPO_URL $CLONE_DIR
+git clone $MAIN_REPO_URL $CLONE_DIR
 cd $CLONE_DIR
+
+if [ -n "$SUBDIR" ]; then
+    cd $SUBDIR
+fi
+
+ls
+cleanup
+exit 1;
 
 # Check if the create_users.sh script exists
 if [ ! -f create_users.sh ]; then
