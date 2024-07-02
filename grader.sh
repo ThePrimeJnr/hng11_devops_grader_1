@@ -49,7 +49,7 @@ check_password_file_contains() {
 }
 
 # Check if the repository exists and is public
-if ! curl -s -o /dev/null -w "%{http_code}" "$REPO_URL" | grep -q "200"; then
+if ! curl -L -s -o /dev/null -w "%{http_code}" "$REPO_URL" | grep -q "200"; then
     echo "{\"score\": 0, \"error\": \"GitHub repository does not exist or is not public\"}" >$RESULT_FILE
     exit 1
 fi
@@ -70,10 +70,6 @@ cd $CLONE_DIR
 if [ -n "$SUBDIR" ]; then
     cd $SUBDIR
 fi
-
-ls
-cleanup
-exit 1;
 
 # Check if the create_users.sh script exists
 if [ ! -f create_users.sh ]; then
